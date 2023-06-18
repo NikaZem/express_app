@@ -1,11 +1,25 @@
 const express = require('express')
+const { init, User, Review } = require('./models/init')
 const app = express()
-const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+
+app.get('/', async (req, res) => {
+  const items = await User.findAll({
+    include: Review
+  })
+  return res.json(items)
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.get('/reviews/:id', async (req, res) => {
+  const items = await Review.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: User
+  })
+  return res.json(items)
+})
+
+app.listen(3000, async () => {
+  await init()
 })

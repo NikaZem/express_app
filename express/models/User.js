@@ -1,9 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-const sequelize = new Sequelize('education_aggregator_db', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql'
-})
+const sequelize = require('../DB')
+const { DataTypes } = require('sequelize')
 
 const User = sequelize.define('User', {
     id: {
@@ -47,27 +43,7 @@ const User = sequelize.define('User', {
       }
   }, {
     tableName: 'users',
-    timestamps: false 
+    timestamps: false
   });
-  
-  // `sequelize.define` also returns the model
-  console.log(User === sequelize.models.User); // true
 
-;(async () => {
-    try {
-      await User.sync({
-          alter: true,
-          force: false
-      })
-
-      const user = await User.create({
-        email: 'fffrer@mail.ru',
-        password: 'ghjhg',
-        first_name: 'Надежда',
-        last_name: 'Васильева'
-      })
-      console.log('auto increment is:', user.id);
-  } catch (error) {
-        console.error(error);
-  }
-})()
+  module.exports = User;
